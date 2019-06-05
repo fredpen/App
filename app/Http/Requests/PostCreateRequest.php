@@ -24,10 +24,10 @@ class PostCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'title' => 'required|min:4',
-            // 'body' => 'required|min:4',
-            // 'photo_id' => 'required',
-            // 'category_id' => 'required'
+            'title' => 'required|min:4',
+            'body' => 'required|min:4',
+            'photo_id' => 'required',
+            'category_id' => 'required'
         ];
     }
 

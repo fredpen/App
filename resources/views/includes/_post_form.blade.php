@@ -12,7 +12,7 @@
 
 <div class="form-group mb-3">
     {!! Form::label('category_id', 'Category', []) !!}
-    {!! Form::select('category_id', [''=>'select post category'], null, ['class'=>'custom-select']) !!}
+    {!! Form::select('category_id', [''=>'select a category'] + $categories, null, ['class'=>'text-capitalise custom-select']) !!}
 </div>
 
 <div class="form-group mb-3">

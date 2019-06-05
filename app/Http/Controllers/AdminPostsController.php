@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Http\Requests\PostCreateRequest;
 use App\Photo;
 use App\Posts;
@@ -28,7 +29,8 @@ class AdminPostsController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create');
+        $categories = Category::pluck('name', 'id')->toArray();
+        return view('admin.posts.create', compact('categories'));
     }
 
     /**
@@ -59,7 +61,9 @@ class AdminPostsController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Posts::findOrFail($id);
+
+        return view('post.show', compact('post', 'categories'));
     }
 
     /**
@@ -70,7 +74,9 @@ class AdminPostsController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.posts.edit');
+        $post = Posts::findOrFail($id);
+          $categories = Category::pluck('name', 'id')->toArray();
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -82,7 +88,33 @@ class AdminPostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if (Posts::findOrFail($id)->user_id == Auth::id()) {
+
+            // validate
+            $request->validate([
+                'body' => 'required|min:4',
+                'category_id' => 'required',
+                'title' => 'bail|required|min:4|max:255'
+            ]);
+
+            $post = Posts::findOrFail($id);
+            $input = $request->all();
+            if ($file = $request->file('photo_id')) {
+                $name = time() . $file->getClientOriginalName();
+                $file->move('images', $name);
+                $photo = Photo::create(['file'=> $name]);
+                $input['photo_id'] = $photo->id;
+            }
+
+            // Auth::user()->post()->whereId($id)->first()->update($input);
+            $post->update($input);
+
+            return redirect("/admin/post");
+        }
+
+        return back()->with('status', 'You are not authorised to do that!');
+
+
     }
 
     /**
@@ -93,6 +125,10 @@ class AdminPostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (Posts::findOrFail($id)->user_id == Auth::id()) {
+             $post = Posts::findOrFail($id)->delete();
+             return back();
+        }
+        return back()->with('status', 'You are not authorised to do that!');
     }
 }

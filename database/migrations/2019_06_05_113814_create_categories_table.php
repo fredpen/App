@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ReferencePostOnUsersForDelete extends Migration
+class CreateCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class ReferencePostOnUsersForDelete extends Migration
      */
     public function up()
     {
-        Schema::table('posts', function (Blueprint $table) {
-            //foreign key
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        Schema::create('categories', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name')->index();
+            $table->timestamps();
         });
     }
 
@@ -26,8 +27,6 @@ class ReferencePostOnUsersForDelete extends Migration
      */
     public function down()
     {
-        Schema::table('posts', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('categories');
     }
 }

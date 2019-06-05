@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ReferencePhotoOnUsersForDelete extends Migration
+class AddDeleteConstraintToPostsTableInRelationToUser extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class ReferencePhotoOnUsersForDelete extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-             //foreign key
-            // $table->foreign('photo_id')->references('id')->on('photos')->onDelete('cascade');
+        Schema::table('posts', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -26,7 +25,7 @@ class ReferencePhotoOnUsersForDelete extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('posts', function (Blueprint $table) {
             //
         });
     }
