@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUsersRequest;
 use App\Http\Requests\UsersRequest;
 use App\Photo;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class UsersController extends Controller
 {
@@ -40,7 +42,11 @@ class UsersController extends Controller
      */
     public function store(UsersRequest $request)
     {
-        $input = $request->all();
+        if (empty(trim($request->password))) {
+            $input = $request->except('password');
+        } else {
+            $input = $request->all();
+        }
         if ($file = $request->file('photo_id')) {
             $image_name = time() . $file->getClientOriginalName();
             $file->move('images', $image_name);
@@ -71,19 +77,37 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $roles = Role::pluck('name', 'id')->toArray();
+        return view('admin.users.edit', compact('user', 'roles'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @ param  \Illuminate\Http\Request  $request
+     * @ param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUsersRequest $request, $id)
     {
-        //
+        // this is very important
+        if (empty(trim($request->password))) {
+            $input = $request->except('password');
+        } else {
+            $input = $request->all();
+            $input['password'] = password_hash($request->password, PASSWORD_DEFAULT);
+        }
+        $user = User::findOrFail($id);
+        if ($file = $request->file('photo_id')) {
+            $image_name = time() . $file->getClientOriginalName();
+            $file->move('images', $image_name);
+            $photo = Photo::create(['file'=> $image_name]);
+            $input['photo_id'] = $photo->id;
+        }
+        $user->update($input);
+        Session::flash('update', 'The user account has been updated');
+        return redirect("/users");
     }
 
     /**
@@ -94,6 +118,10 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        unlink(public_path() . $user->photo->file);
+        User::findOrFail($id)->delete();
+        Session::flash('delete', "User has been removed");
+        return redirect("/users");
     }
 }

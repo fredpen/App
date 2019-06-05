@@ -1,6 +1,8 @@
 @extends('layouts.admin');
 
+
 @section('content')
-    <h1>Edit Post</h1>
+
+    <h1>Welcome to your dashboard</h1>
 
 @endsection

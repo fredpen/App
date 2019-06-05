@@ -17,7 +17,9 @@
                     <h4 class="header-title text-center">Create new user</h4>
                     <div class="row justify-content-center">
                         <div class="col-md-6">
-                            @include('../../includes/_form_error', [$text = "Update users", $controller = "UsersController@store"])
+                            {!! Form::open(['method'=>'POST', 'action'=>'UsersController@store', 'files'=>true]) !!}
+                                @include('../../includes/_form_error', [$text = "Create User"])
+                            {!! Form::close() !!}
                         </div> <!-- end col -->
                     </div> <!-- end row-->
                 </div> <!-- end card-body -->

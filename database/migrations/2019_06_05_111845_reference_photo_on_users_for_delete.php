@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePhotosTable extends Migration
+class ReferencePhotoOnUsersForDelete extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreatePhotosTable extends Migration
      */
     public function up()
     {
-        Schema::create(
-            'photos', function (Blueprint $table) {
-                $table->bigIncrements('id');
-                $table->string('file')->nullable();
-                $table->timestamps();
-            }
-        );
+        Schema::table('users', function (Blueprint $table) {
+             //foreign key
+            // $table->foreign('photo_id')->references('id')->on('photos')->onDelete('cascade');
+        });
     }
 
     /**
@@ -29,6 +26,8 @@ class CreatePhotosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('photos');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 }

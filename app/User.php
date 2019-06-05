@@ -27,7 +27,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
     /**
      * The attributes that should be cast to native types.
      *
@@ -44,6 +43,24 @@ class User extends Authenticatable
 
     public function photo()
     {
-        return $this->belongsTo('App/Photo');
+        return $this->belongsTo('App\Photo');
+    }
+
+    public function getEmailAttribute($value)
+    {
+        return ucfirst($value);
+    }
+
+    public function is_admin()
+    {
+        if ($this->role->name === "author") {
+            return true;
+        }
+        return false;
+    }
+
+    public function post()
+    {
+        return $this->hasMany('App\Posts');
     }
 }

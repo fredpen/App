@@ -13,13 +13,61 @@
 </head>
 
     <body>
+        <div id="app">
+            <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+                <div class="container">
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <!-- Left Side Of Navbar -->
+                        <ul class="navbar-nav mr-auto">
+
+                        </ul>
+
+                        <!-- Right Side Of Navbar -->
+                        <ul class="navbar-nav ml-auto">
+                            <!-- Authentication Links -->
+                            @guest
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                </li>
+                                @if (Route::has('register'))
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    </li>
+                                @endif
+                            @else
+                                <li class="nav-item dropdown">
+                                    <a id="navbarDropdown" class="text-primary font-weight-bold nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>Welcome
+                                        {{ Auth::user()->name }} <span class="caret"></span>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                           onclick="event.preventDefault();
+                                                         document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            @csrf
+                                        </form>
+                                    </div>
+                                </li>
+                            @endguest
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+
         <!-- Begin page -->
         <div class="wrapper">
             <!-- ========== Left Sidebar Start ========== -->
             <div class="left-side-menu">
                 <div class="slimscroll-menu" id="left-side-menu-container">
                     <!--- Sidemenu -->
-                    <ul class="metismenu side-nav">
+                    <ul class="metismenu side-nav" aria-expanded="false">
                         <li class="side-nav-title side-nav-item">Menus</li>
                         <li class="side-nav-item">
                             <a href="javascript: void(0);" class="side-nav-link">
@@ -34,12 +82,7 @@
                                 <li>
                                     <a href="{{ route('users.create') }}">Create Users</a>
                                 </li>
-                                <li>
-                                    <a href="dashboard-crm.html">CRM</a>
-                                </li>
-                                <li>
-                                    <a href="dashboard-projects.html">Projects</a>
-                                </li>
+
                             </ul>
                         </li>
 
@@ -51,9 +94,16 @@
                             </a>
                             <ul class="side-nav-second-level" aria-expanded="false">
                                 <li>
-                                    <a href="apps-calendar.html">Calendar</a>
+                                    <a href="{{ route('post.index') }}">All Posts</a>
                                 </li>
-                                <li class="side-nav-item">
+                                 <li>
+                                    <a href="{{ route('post.create') }}">Create Post</a>
+                                </li>
+                                {{-- <li>
+                                    <a href="{{ route('post.create') }}">Calendar</a>
+                                </li> --}}
+
+                                {{-- <li class="side-nav-item">
                                     <a href="javascript: void(0);" aria-expanded="false">Projects
                                         <span class="menu-arrow"></span>
                                     </a>
@@ -65,8 +115,8 @@
                                             <a href="apps-projects-details.html">Details</a>
                                         </li>
                                     </ul>
-                                </li>
-                                <li>
+                                </li> --}}
+                                {{-- <li>
                                     <a href="apps-tasks.html">Tasks</a>
                                 </li>
                                 <li class="side-nav-item">
@@ -99,7 +149,7 @@
                                             <a href="apps-ecommerce-sellers.html">Sellers</a>
                                         </li>
                                     </ul>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
 

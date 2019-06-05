@@ -4,9 +4,9 @@
     @endforeach
 @endif
 
-  {!! Form::open(['method'=>'POST', 'action'=>$controller, 'files'=>true]) !!}
+
     <div class="form-group mb-3">
-        {!! Form::label('name', 'Name', []) !!}
+        {!! Form::label('name', 'Name',) !!}
         {!! Form::text('name', null, ['class'=>'form-control', 'placeholder'=>'Jane Dow']) !!}
     </div>
 
@@ -23,7 +23,7 @@
 
     <div class="form-group mb-3">
         {!! Form::label('is_active', 'Status', []) !!}
-        {!! Form::select('is_active', ['0'=>'Not active', '1'=>'Active'], 0, ['class'=>'custom-select']) !!}
+        {!! Form::select('is_active', ['0'=>'Not active', '1'=>'Active'], null, ['class'=>'custom-select']) !!}
     </div>
 
     <div class="form-group mb-3">
@@ -33,10 +33,10 @@
 
     <div class="form-group mb-3">
         {!! Form::label('photo_id', 'Photo', []) !!}
-        {!! Form::file('photo_id', ['class'=>'form-control']) !!}
+        {!! Form::file('photo_id', ['class'=>'form-control-file']) !!}
     </div>
 
     <div class="form-group mb-3">
        {!! Form::submit($text, ['class'=>'btn btn-primary']) !!}
     </div>
-{!! Form::close() !!}
+

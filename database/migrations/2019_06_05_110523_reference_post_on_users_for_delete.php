@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPhotoIdToUsersTable extends Migration
+class ReferencePostOnUsersForDelete extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddPhotoIdToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('photo_id');
+        Schema::table('posts', function (Blueprint $table) {
+            //foreign key
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -25,8 +26,8 @@ class AddPhotoIdToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropIfExists('photo_id');
+        Schema::table('posts', function (Blueprint $table) {
+            //
         });
     }
 }
